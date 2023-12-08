@@ -13,5 +13,17 @@
 # include <stdlib.h> //malloc, free, exit
 # include <errno.h> //perror
 # include <string.h> //strerror
+# include <limits.h> // PATH_MAX
+# include <stdio.h> // printf
+# include <stdbool.h>
+
+typedef struct s_data{
+	bool	a; //all
+	bool	l; //long listing
+	bool	R; //recursive
+	bool	r; //reverse
+	bool	t; //sort by time
+	char	*path;
+} t_data;
 
 #endif
