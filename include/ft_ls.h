@@ -15,15 +15,36 @@
 # include <string.h> //strerror
 # include <limits.h> // PATH_MAX
 # include <stdio.h> // printf
-# include <stdbool.h>
+# include <stdbool.h> // bool
+# include "../Libft/src/libft.h" //
 
 typedef struct s_data{
-	bool	a; //all
-	bool	l; //long listing
-	bool	R; //recursive
-	bool	r; //reverse
-	bool	t; //sort by time
-	char	*path;
+	bool		a; //all
+	bool		l; //long listing
+	bool		R; //recursive
+	bool		r; //reverse
+	bool		t; //sort by time
+	char		*path;
+	__blksize_t	total_block_size;
 } t_data;
+
+typedef struct s_list
+{
+	char			*path;
+	off_t			bytes;
+	__blksize_t		block_size;
+	struct s_list	*prev;
+	struct s_list	*next;
+}					t_list;
+
+// List func
+int		list_addtop(t_list **list, char *elem);
+int		list_append(t_list **list, char *elem);
+size_t	len_list(t_list *list);
+int		get_index(t_list *list, char *str);
+int		insert_list(t_list **list, char *str, int index);
+void	print_list(t_list *list);
+void	free_list(t_list **list);
+int		sort_list_name(t_list **list);
 
 #endif
