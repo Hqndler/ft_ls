@@ -8,6 +8,7 @@ void	init_data(t_data *data){
 	data->t = false;
 	data->path = NULL;
 	data->total_block_size = 0;
+	data->bytespace = 0;
 }
 
 void	parse_args(char **args, t_data *data){
@@ -38,16 +39,32 @@ void	parse_args(char **args, t_data *data){
 	}
 }
 
+static int	size_len(long long bytes){
+	int	size;
+
+	size = 1;
+	while (bytes >= 10){
+		++size;
+		bytes /= 10;
+	}
+	return size;
+}
+
 void	file_bytes(t_list *list, t_data *data){
 	t_list		*actual = list->prev;
 	__blksize_t	block_size;
 	struct stat	file_stat;
+	int			tmp;
 
 	if (!stat(actual->path, &file_stat)){
 		actual->bytes = file_stat.st_size;
 		block_size = file_stat.st_blksize;
 		actual->block_size = (actual->bytes + block_size - 1) / block_size;
 		data->total_block_size += actual->block_size;
+		tmp = size_len(file_stat.st_size);
+		actual->spacesize = tmp;
+		if (tmp > data->bytespace)
+			data->bytespace = tmp;
 	}
 	else
 		perror("Error while getting file size / bytes");
@@ -106,17 +123,17 @@ int main(int argc, char** argv){
 	t_list *tmp = list;
 	while (tmp->next != list){
 		// printf("%ld %s\n", tmp->bytes, tmp->path);
-		ft_putnbr_fd(tmp->bytes, 1);
-		write(1, "\t", 1);
+		// ft_putnbr_fd(tmp->bytes, 1);
+		print_size(tmp, data);
+		write(1, " ", 1);
 		print_time(tmp->lastmodified);
 		printf(" %s\n", tmp->path);
 		tmp = tmp->next;
 	}
-	ft_putnbr_fd(tmp->bytes, 1);
+	print_size(tmp, data);
 	write(1, " ", 1);
 	print_time(tmp->lastmodified);
 	printf(" %s\n", tmp->path);
-
 	free_list(&list);
 	closedir(dir);
 	return 0;

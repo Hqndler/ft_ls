@@ -32,6 +32,7 @@ typedef struct s_data{
 typedef struct s_list
 {
 	char			*path;
+	int				spacesize;
 	off_t			bytes;
 	__blksize_t		block_size;
 	time_t			lastmodified;
@@ -50,5 +51,6 @@ void	free_list(t_list **list);
 int		sort_list_name(t_list **list);
 
 void	print_time(time_t lastmodified);
+void	print_size(t_list *actual, t_data data);
 
 #endif

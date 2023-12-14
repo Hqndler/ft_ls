@@ -10,7 +10,7 @@ SRC_DIR	=	src/
 OBJ_DIR	=	obj/
 
 #Source
-FILES	=	main list_utils print_time
+FILES	=	main list_utils print_time print_size
 SRCS	=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJS	=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
