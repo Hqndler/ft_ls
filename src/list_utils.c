@@ -159,7 +159,7 @@ static void	sort_tab_name(t_list ***tab, size_t len){
 	while(++i < len - 1){
 		j = -1;
 		while (++j < len - 1){
-			if (ft_strcmp((*tab)[j]->path, (*tab)[j + 1]->path) >= 0){
+			if (ft_strcmp((*tab)[j]->path, (*tab)[j + 1]->path) > 0){
 				tmp = (*tab)[j];
 				(*tab)[j] = (*tab)[j + 1];
 				(*tab)[j + 1] = tmp;

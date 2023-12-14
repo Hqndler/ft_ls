@@ -50,7 +50,21 @@ void	file_bytes(t_list *list, t_data *data){
 		data->total_block_size += actual->block_size;
 	}
 	else
-		perror("Error while getting file information");
+		perror("Error while getting file size / bytes");
+}
+
+void	file_time(t_list *list){
+	struct stat	file_stat;
+	t_list		*actual;
+
+	actual = list->prev;
+
+	if (!stat(actual->path, &file_stat)){
+		actual->lastmodified = file_stat.st_mtime;
+		// actual->timeinfo = localtime(&last_modified);
+	}
+	else
+		perror("Error while getting file time");
 }
 
 int main(int argc, char** argv){
@@ -83,43 +97,27 @@ int main(int argc, char** argv){
 		fileread = readdir(dir);
 		if (!fileread)
 			break;
-		printf("\t%s\n", fileread->d_name);
 		list_append(&list, fileread->d_name);
 		file_bytes(list, &data);
+		file_time(list);
 		// printf("%ld %s\n", list->prev->bytes, list->prev->path);
 	}
 	sort_list_name(&list);
 	t_list *tmp = list;
 	while (tmp->next != list){
-		printf("%ld %s\n", tmp->bytes, tmp->path);
+		// printf("%ld %s\n", tmp->bytes, tmp->path);
+		ft_putnbr_fd(tmp->bytes, 1);
+		write(1, "\t", 1);
+		print_time(tmp->lastmodified);
+		printf(" %s\n", tmp->path);
 		tmp = tmp->next;
 	}
-	printf("%ld %s\n", tmp->bytes, tmp->path);
+	ft_putnbr_fd(tmp->bytes, 1);
+	write(1, " ", 1);
+	print_time(tmp->lastmodified);
+	printf(" %s\n", tmp->path);
 
 	free_list(&list);
 	closedir(dir);
 	return 0;
 }
-
-// int main() {
-//     const char *filename = "Makefile";  // Replace with your file name
-//     struct stat file_stat;
-
-//     if (stat(filename, &file_stat) == 0) {
-//         // File size in bytes
-//         off_t file_size = file_stat.st_size;
-//         printf("File size: %lld bytes\n", (long long)file_size);
-
-//         // Block size in bytes
-//         __blksize_t block_size = file_stat.st_blksize;
-//         printf("Block size: %lld bytes\n", (long long)block_size);
-
-//         // Calculate block count
-//         long long block_count = (file_size + block_size - 1) / block_size;
-//         printf("Block count: %lld\n", block_count);
-//     } else {
-//         perror("Error while getting file information");
-//     }
-
-//     return 0;
-// }

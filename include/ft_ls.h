@@ -33,6 +33,7 @@ typedef struct s_list
 	char			*path;
 	off_t			bytes;
 	__blksize_t		block_size;
+	time_t			lastmodified;
 	struct s_list	*prev;
 	struct s_list	*next;
 }					t_list;
@@ -46,5 +47,7 @@ int		insert_list(t_list **list, char *str, int index);
 void	print_list(t_list *list);
 void	free_list(t_list **list);
 int		sort_list_name(t_list **list);
+
+void	print_time(time_t lastmodified);
 
 #endif
