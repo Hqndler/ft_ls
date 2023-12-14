@@ -26,6 +26,7 @@ typedef struct s_data{
 	bool		t; //sort by time
 	char		*path;
 	__blksize_t	total_block_size;
+	int			bytespace;
 } t_data;
 
 typedef struct s_list
