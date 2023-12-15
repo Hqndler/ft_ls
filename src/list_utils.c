@@ -186,7 +186,7 @@ int	sort_list_name(t_list **list)
 	size_t	len;
 	
 	len = len_list(*list);
-	if (!len || len == 1)
+	if (len < 1)
 		return 1;
 	tab = malloc(sizeof(t_list) * len);
 	if (!list)

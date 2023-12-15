@@ -34,7 +34,7 @@ static void	get_mounth(char *buff, int nb){
 }
 
 void	print_time(time_t lastmodified){
-	char		mounth[4];
+	char		mounth[13]; // tout faire en un buffer
 	time_t		currenttime;
 	struct tm	*now;
 	struct tm	*timeinfo;
@@ -58,6 +58,8 @@ void	print_time(time_t lastmodified){
 		ft_putnbr_fd(timeinfo->tm_year, 1);
 	}
 	else{
+		if (timeinfo->tm_hour < 10)
+			write(1, "0", 1);
 		ft_putnbr_fd(timeinfo->tm_hour, 1);
 		write(1, ":", 1);
 		if (timeinfo->tm_min < 10)

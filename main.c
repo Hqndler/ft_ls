@@ -20,7 +20,7 @@ void	parse_args(char **args, t_data *data){
 	i = -1;
 	while (args[++arg]){
 		if (args[arg][0] != '-')
-			data->path = ft_strdup(args[arg++]);
+			data->path = ft_strdup(args[arg++]); // malloc pas protégé
 		else{
 			tmp = args[arg];
 			while (tmp[++i]){
@@ -119,6 +119,7 @@ int main(int argc, char** argv){
 		file_time(list);
 		// printf("%ld %s\n", list->prev->bytes, list->prev->path);
 	}
+	printf("total %ld\n", data.total_block_size / 2); // chelou la division par deux
 	sort_list_name(&list);
 	t_list *tmp = list;
 	while (tmp->next != list){
