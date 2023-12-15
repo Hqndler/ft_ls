@@ -1,12 +1,16 @@
 #include "ft_ls.h"
 
-static void	fill_mounth(char *buff, const char *name){
+static int	fill_mounth(char *buff, const char *name)
+{
 	buff[0] = name[0];
 	buff[1] = name[1];
 	buff[2] = name[2];
+	buff[3] = ' ';
+	return (4);
 }
 
-static void	get_mounth(char *buff, int nb){
+static int	get_mounth(char *buff, int nb)
+{
 	buff[3] = 0;
 	if (nb == 0)
 		return fill_mounth(buff, "Jan");
@@ -33,37 +37,59 @@ static void	get_mounth(char *buff, int nb){
 	return fill_mounth(buff, "Dec");
 }
 
-void	print_time(time_t lastmodified){
-	char		mounth[13]; // tout faire en un buffer
+static void	fill_number(char *buff, int nb, int (*index), char c)
+{
+	if (nb >= 10)
+		buff[(*index)++] = (nb / 10) + 48;
+	buff[(*index)++] = (nb % 10) + 48;
+	buff[(*index)++] = c;
+}
+
+static void	fill_year(char *buff, int year, int (*index))
+{
+	int	m;
+	int	c;
+	int	d;
+	int	u;
+
+	m = year / 1000;
+	year %= 1000;
+	c = year / 100;
+	year %= 100;
+	d = year / 10;
+	u = year % 10;
+	buff[(*index)++] = ' ';
+	buff[(*index)++] = m + 48;
+	buff[(*index)++] = c + 48;
+	buff[(*index)++] = d + 48;
+	buff[(*index)++] = u + 48;
+}
+
+void	print_time(time_t lastmodified)
+{
+	char		buffer[13];
 	time_t		currenttime;
 	struct tm	*now;
 	struct tm	*timeinfo;
+	int			i;
 
 	currenttime = time(NULL);
 	now = localtime(&currenttime);
 	timeinfo = localtime(&lastmodified);
-
-	get_mounth(mounth, timeinfo->tm_mon);
-	// mounth[3] = 0;
-	// printf("[%s]\n", mounth);
-	printf("\a");
-	write(1, mounth, 3);
-	write(1, " ", 1);
+	i = get_mounth(buffer, timeinfo->tm_mon);
 	if (timeinfo->tm_mday < 10)
-		write(1, " ", 1);
-	ft_putnbr_fd(timeinfo->tm_mday, 1);
-	write(1, " ", 1);
-	if (timeinfo->tm_year != now->tm_year){
-		write(1, " ", 1);
-		ft_putnbr_fd(timeinfo->tm_year, 1);
-	}
-	else{
+		buffer[i++] = ' ';
+	fill_number(buffer, timeinfo->tm_mday, &i, ' ');
+	if (timeinfo->tm_year != now->tm_year)
+		fill_year(buffer, timeinfo->tm_year, &i);
+	else
+	{
 		if (timeinfo->tm_hour < 10)
-			write(1, "0", 1);
-		ft_putnbr_fd(timeinfo->tm_hour, 1);
-		write(1, ":", 1);
+			buffer[i++] = '0';
+		fill_number(buffer, timeinfo->tm_hour, &i, ':');
 		if (timeinfo->tm_min < 10)
-			write(1, "0", 1);
-		ft_putnbr_fd(timeinfo->tm_min, 1);
+			buffer[i++] = '0';
+		fill_number(buffer, timeinfo->tm_min, &i, 0);
 	}
+	write(1, buffer, 12);
 }
