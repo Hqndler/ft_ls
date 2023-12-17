@@ -6,6 +6,11 @@ static int	list_new_elem_str(t_list **new, char *elem)
 	if (*new == NULL)
 		return (0);
 	(*new)->path = ft_strdup(elem);
+	if (!(*new)->path)
+		return free(*new), (0);
+	(*new)->spacesize = 0;
+	(*new)->spacelink = 0;
+	(*new)->bytes = 0;
 	(*new)->next = NULL;
 	(*new)->prev = NULL;
 	return (1);
