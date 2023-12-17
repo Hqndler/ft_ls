@@ -1,0 +1,23 @@
+-a, --all
+        do not ignore entries starting with .
+
+-r, --reverse
+        reverse order while sorting
+
+-R, --recursive
+        list subdirectories recursively
+
+-t      sort by modification time, newest first
+
+    BONUS
+
+-u      with -lt: sort by, and show, access time; 
+        with -l: show access time and sort by name; 
+        otherwise: sort by access time, newest first
+
+-f      do not sort, enable -aU, disable -ls --color
+
+-g      like -l, but do not list owner
+
+-d, --directory
+        list directories themselves, not their contents

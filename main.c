@@ -6,9 +6,12 @@ void	init_data(t_data *data){
 	data->R = false;
 	data->r = false;
 	data->t = false;
-	data->path = NULL;
-	data->total_block_size = 0;
+	// data->path = NULL;
+	data->currenttime = time(NULL);
+	// data->total_block_size = 0;
+	data->total_bytes = 0;
 	data->bytespace = 0;
+	data->linkspace = 0;
 }
 
 void	parse_args(char **args, t_data *data){
@@ -19,22 +22,18 @@ void	parse_args(char **args, t_data *data){
 	arg = -1;
 	i = -1;
 	while (args[++arg]){
-		if (args[arg][0] != '-')
-			data->path = ft_strdup(args[arg++]); // malloc pas protégé
-		else{
-			tmp = args[arg];
-			while (tmp[++i]){
-				if (tmp[i] == 'a')
-					data->a = true;
-				if (tmp[i] == 'l')
-					data->l = true;
-				if (tmp[i] == 'R')
-					data->R = true;
-				if (tmp[i] == 'r')
-					data->r = true;
-				if (tmp[i] == 't')
-					data->t = true;
-			}
+		tmp = args[arg];
+		while (tmp[++i]){
+			if (tmp[i] == 'a')
+				data->a = true;
+			if (tmp[i] == 'l')
+				data->l = true;
+			if (tmp[i] == 'R')
+				data->R = true;
+			if (tmp[i] == 'r')
+				data->r = true;
+			if (tmp[i] == 't')
+				data->t = true;
 		}
 	}
 }
@@ -50,38 +49,34 @@ static int	size_len(long long bytes){
 	return size;
 }
 
-void	file_bytes(t_list *list, t_data *data){
-	t_list		*actual = list->prev;
-	__blksize_t	block_size;
-	struct stat	file_stat;
-	int			tmp;
-
-	if (!stat(actual->path, &file_stat)){
-		actual->bytes = file_stat.st_size;
-		block_size = file_stat.st_blksize;
-		actual->block_size = (actual->bytes + block_size - 1) / block_size;
-		data->total_block_size += actual->block_size;
-		tmp = size_len(file_stat.st_size);
-		actual->spacesize = tmp;
-		if (tmp > data->bytespace)
-			data->bytespace = tmp;
-	}
-	else
-		perror("Error while getting file size / bytes");
-}
-
-void	file_time(t_list *list){
-	struct stat	file_stat;
-	t_list		*actual;
+int	open_stat(t_list *list){
+	t_list	*actual;
 
 	actual = list->prev;
-
-	if (!stat(actual->path, &file_stat)){
-		actual->lastmodified = file_stat.st_mtime;
-		// actual->timeinfo = localtime(&last_modified);
+	// printf("%s\t\t%p\n", actual->path, &(actual->file_stat));
+	if (!stat(actual->path, &(actual->file_stat))){
+		// printf("%o\n", actual->file_stat.st_mode & 0777);
+		return 0;
 	}
 	else
-		perror("Error while getting file time");
+		perror("Error while getting file stat");
+	return 1;
+}
+
+void	get_bytes(t_list *list, t_data *data){
+	t_list	*actual;
+	int		slen;
+
+	actual = list->prev;
+	data->total_bytes += actual->file_stat.st_size;
+	slen = size_len(actual->file_stat.st_size);
+	actual->spacesize = slen;
+	if (slen > data->bytespace)
+		data->bytespace = slen;
+	slen = size_len(actual->file_stat.st_nlink);
+	actual->spacelink = slen;
+	if (slen > data->linkspace)
+		data->linkspace = slen;
 }
 
 int main(int argc, char** argv){
@@ -115,26 +110,25 @@ int main(int argc, char** argv){
 		if (!fileread)
 			break;
 		list_append(&list, fileread->d_name);
-		file_bytes(list, &data);
-		file_time(list);
-		// printf("%ld %s\n", list->prev->bytes, list->prev->path);
+		open_stat(list);
+		get_bytes(list, &data);
 	}
-	printf("total %ld\n", data.total_block_size / 2); // chelou la division par deux
-	sort_list_name(&list);
+	printf("total %ld\n", data.total_bytes / 1024); // comprends pas pourquoi ça donne pas un bon total
+	sort_list_name(&list, ALPHA);
 	t_list *tmp = list;
 	while (tmp->next != list){
-		// printf("%ld %s\n", tmp->bytes, tmp->path);
-		// ft_putnbr_fd(tmp->bytes, 1);
+		print_right_link(tmp, data);
+		print_owner_group(list);
 		print_size(tmp, data);
-		write(1, " ", 1);
-		print_time(tmp->lastmodified);
-		printf(" %s\n", tmp->path);
+		print_time(tmp->file_stat.st_mtime, data);
+		printf("%s\n", tmp->path);
 		tmp = tmp->next;
 	}
+	print_right_link(tmp, data);
+	print_owner_group(list);
 	print_size(tmp, data);
-	write(1, " ", 1);
-	print_time(tmp->lastmodified);
-	printf(" %s\n", tmp->path);
+	print_time(tmp->file_stat.st_mtime, data);
+	printf("%s\n", tmp->path);
 	free_list(&list);
 	closedir(dir);
 	return 0;

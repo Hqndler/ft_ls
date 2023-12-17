@@ -65,16 +65,14 @@ static void	fill_year(char *buff, int year, int (*index))
 	buff[(*index)++] = u + 48;
 }
 
-void	print_time(time_t lastmodified)
+void	print_time(time_t lastmodified, t_data data)
 {
 	char		buffer[13];
-	time_t		currenttime;
 	struct tm	*now;
 	struct tm	*timeinfo;
 	int			i;
 
-	currenttime = time(NULL);
-	now = localtime(&currenttime);
+	now = localtime(&data.currenttime);
 	timeinfo = localtime(&lastmodified);
 	i = get_mounth(buffer, timeinfo->tm_mon);
 	if (timeinfo->tm_mday < 10)
@@ -89,7 +87,7 @@ void	print_time(time_t lastmodified)
 		fill_number(buffer, timeinfo->tm_hour, &i, ':');
 		if (timeinfo->tm_min < 10)
 			buffer[i++] = '0';
-		fill_number(buffer, timeinfo->tm_min, &i, 0);
+		fill_number(buffer, timeinfo->tm_min, &i, ' ');
 	}
-	write(1, buffer, 12);
+	write(1, buffer, 13);
 }
