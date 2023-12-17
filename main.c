@@ -117,14 +117,14 @@ int main(int argc, char** argv){
 	sort_list_name(&list, ALPHA);
 	t_list *tmp = list;
 	while (tmp->next != list){
-		print_right_link(tmp, data);
+		print_permission_link(tmp, data);
 		print_owner_group(list);
 		print_size(tmp, data);
 		print_time(tmp->file_stat.st_mtime, data);
 		printf("%s\n", tmp->path);
 		tmp = tmp->next;
 	}
-	print_right_link(tmp, data);
+	print_permission_link(tmp, data);
 	print_owner_group(list);
 	print_size(tmp, data);
 	print_time(tmp->file_stat.st_mtime, data);

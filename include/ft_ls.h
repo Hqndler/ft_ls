@@ -61,6 +61,6 @@ int		sort_list_name(t_list **list, int mode);
 void	print_time(time_t lastmodified, t_data);
 void	print_size(t_list *actual, t_data data);
 void    print_owner_group(t_list *list);
-void	print_right_link(t_list *list, t_data data);
+void	print_permission_link(t_list *list, t_data data);
 
 #endif

@@ -22,7 +22,7 @@ static void	check_all_perm(char *buff, int *index, mode_t mode)
 	check_perm(buff, (mode & S_IXOTH), index, 'x');
 }
 
-void	print_right_link(t_list *list, t_data data)
+void	print_permission_link(t_list *list, t_data data)
 {
 	mode_t	mode;
 	t_list	*actual;
