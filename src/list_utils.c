@@ -149,8 +149,28 @@ void	free_list(t_list **list)
 	free(current);
 	*list = NULL;
 }
+// skip starting '.' char 
+static int	compare_function(t_list *first, t_list *second, int mode)
+{
+	char	*s1;
+	char	*s2;
 
-static void	sort_tab_name(t_list ***tab, size_t len){
+	if (mode == ALPHA)
+	{
+		s1 = first->path;
+		if (s1[0] == '.')
+			s1 = &(s1[1]);
+		s2 = second->path;
+		if (s2[0] == '.')
+			s2 = &(s2[1]);
+		return ft_strcasecmp(first->path, second->path);
+	}
+	else if (mode == TIME)
+		return first->file_stat.st_mtime > second->file_stat.st_mtime;
+	return 0;
+}
+
+static void	sort_tab_name(t_list ***tab, size_t len, int mode){
 	size_t	i;
 	size_t	j;
 	t_list	*tmp;
@@ -159,7 +179,7 @@ static void	sort_tab_name(t_list ***tab, size_t len){
 	while(++i < len - 1){
 		j = -1;
 		while (++j < len - 1){
-			if (ft_strcmp((*tab)[j]->path, (*tab)[j + 1]->path) > 0){
+			if (compare_function((*tab)[j], (*tab)[i + 1], mode) > 0){
 				tmp = (*tab)[j];
 				(*tab)[j] = (*tab)[j + 1];
 				(*tab)[j + 1] = tmp;
@@ -178,7 +198,7 @@ static void	relink_tab(t_list ***tab, size_t len){
 	}
 }
 
-int	sort_list_name(t_list **list)
+int	sort_list_name(t_list **list, int mode)
 {
 	t_list	*tmp;
 	t_list	**tab;
@@ -200,7 +220,7 @@ int	sort_list_name(t_list **list)
 		tmp = tmp->next;
 	}
 	tab[index++] = tmp;
-	sort_tab_name(&tab, len);
+	sort_tab_name(&tab, len, mode);
 	relink_tab(&tab, len);
 	*list = tab[0];
 	return free(tab), 1;

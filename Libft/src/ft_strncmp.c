@@ -45,3 +45,24 @@ int	ft_strcmp(const char *s1, const char *s2)
 	}
 	return (s1[i] - s2[i]);
 }
+
+int	ft_strcasecmp(const char *s1, const char *s2)
+{
+	int		i;
+	char	c1;
+	char	c2;
+
+	if (!s1 || !s2)
+		return (-1);
+	i = 0;
+	while (s1[i] && s2[i]){
+		c1 = ft_tolower(s1[i]);
+		c2 = ft_tolower(s2[i]);
+		if (c1 < c2)
+			return (-1);
+		if (c1 > c2)
+			return (1);
+		++i;
+	}
+	return (0);
+}
