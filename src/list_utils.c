@@ -132,7 +132,7 @@ void	print_list(t_list *list)
 	printf("]\n");
 }
 
-void	free_list(t_list **list)
+int	free_list(t_list **list)
 {
 	t_list	*tmp;
 	t_list	*current;
@@ -148,6 +148,7 @@ void	free_list(t_list **list)
 	free(current->path);
 	free(current);
 	*list = NULL;
+	return (1);
 }
 // skip starting '.' char 
 static int	compare_function(t_list *first, t_list *second, int mode)
@@ -206,7 +207,7 @@ int	sort_list_name(t_list **list, int mode)
 	size_t	len;
 	
 	len = len_list(*list);
-	if (len < 1)
+	if (len <= 1)
 		return 1;
 	tab = malloc(sizeof(t_list) * len);
 	if (!list)

@@ -18,28 +18,24 @@
 # include <stdbool.h> // bool
 # include "../Libft/src/libft.h" //
 
-typedef struct s_data{
+typedef struct	s_data{
 	bool		a; //all
 	bool		l; //long listing
 	bool		R; //recursive
 	bool		r; //reverse
 	bool		t; //sort by time
-	// char		*path;
-	off_t		total_bytes;
+	__blkcnt_t	total_block_count;
 	time_t		currenttime;
-	// __blksize_t	total_block_size;
 	int			bytespace;
 	int			linkspace;
-} t_data;
+}				t_data;
 
-typedef struct s_list
+typedef struct		s_list
 {
 	char			*path;
 	int				spacesize;
 	int				spacelink;
 	off_t			bytes;
-	__blksize_t		block_size;
-	// time_t			lastmodified;
 	struct stat		file_stat;
 	struct s_list	*prev;
 	struct s_list	*next;
@@ -55,7 +51,7 @@ size_t	len_list(t_list *list);
 int		get_index(t_list *list, char *str);
 int		insert_list(t_list **list, char *str, int index);
 void	print_list(t_list *list);
-void	free_list(t_list **list);
+int		free_list(t_list **list);
 int		sort_list_name(t_list **list, int mode);
 
 void	print_time(time_t lastmodified, t_data);

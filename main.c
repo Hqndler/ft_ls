@@ -6,10 +6,8 @@ void	init_data(t_data *data){
 	data->R = false;
 	data->r = false;
 	data->t = false;
-	// data->path = NULL;
 	data->currenttime = time(NULL);
-	// data->total_block_size = 0;
-	data->total_bytes = 0;
+	data->total_block_count = 0;
 	data->bytespace = 0;
 	data->linkspace = 0;
 }
@@ -53,14 +51,11 @@ int	open_stat(t_list *list){
 	t_list	*actual;
 
 	actual = list->prev;
-	// printf("%s\t\t%p\n", actual->path, &(actual->file_stat));
-	if (!stat(actual->path, &(actual->file_stat))){
-		// printf("%o\n", actual->file_stat.st_mode & 0777);
-		return 0;
-	}
+	if (!stat(actual->path, &(actual->file_stat)))
+		return 1;
 	else
 		perror("Error while getting file stat");
-	return 1;
+	return 0;
 }
 
 void	get_bytes(t_list *list, t_data *data){
@@ -68,7 +63,7 @@ void	get_bytes(t_list *list, t_data *data){
 	int		slen;
 
 	actual = list->prev;
-	data->total_bytes += actual->file_stat.st_size;
+	data->total_block_count += actual->file_stat.st_blocks;
 	slen = size_len(actual->file_stat.st_size);
 	actual->spacesize = slen;
 	if (slen > data->bytespace)
@@ -109,27 +104,28 @@ int main(int argc, char** argv){
 		fileread = readdir(dir);
 		if (!fileread)
 			break;
-		list_append(&list, fileread->d_name);
-		open_stat(list);
+		if (!list_append(&list, fileread->d_name) || !open_stat(list))
+			return closedir(dir), free_list(&list);
 		get_bytes(list, &data);
 	}
-	printf("total %ld\n", data.total_bytes / 1024); // comprends pas pourquoi ça donne pas un bon total
-	sort_list_name(&list, ALPHA);
+	closedir(dir);
+	printf("total %ld\n", data.total_block_count / 2); // division by 2 bc ls count by blocks of 1024b and this count for 512b blocks
+	if (!sort_list_name(&list, ALPHA))
+		return free_list(&list);
 	t_list *tmp = list;
 	while (tmp->next != list){
 		print_permission_link(tmp, data);
 		print_owner_group(list);
 		print_size(tmp, data);
 		print_time(tmp->file_stat.st_mtime, data);
-		printf("%s\n", tmp->path);
+		ft_putendl_fd(tmp->path, 1);
 		tmp = tmp->next;
 	}
 	print_permission_link(tmp, data);
 	print_owner_group(list);
 	print_size(tmp, data);
 	print_time(tmp->file_stat.st_mtime, data);
-	printf("%s\n", tmp->path);
+	ft_putendl_fd(tmp->path, 1);
 	free_list(&list);
-	closedir(dir);
 	return 0;
 }
