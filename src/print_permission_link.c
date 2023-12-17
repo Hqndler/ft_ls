@@ -4,8 +4,6 @@ static void	check_perm(char *buff, mode_t perm, int *index, char c)
 {
 	if (perm)
 		buff[*index] = c;
-	else
-		buff[*index] = '-';
 	(*index)++;
 }
 
@@ -29,7 +27,7 @@ void	print_permission_link(t_list *list, t_data data)
 	char	buff[11];
 	int		i;
 
-	actual = list->prev;
+	actual = list;
 	mode = actual->file_stat.st_mode;
 	i = 1;
 	ft_memset(buff, '-', 10);
