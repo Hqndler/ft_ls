@@ -109,9 +109,11 @@ int main(int argc, char** argv){
 		get_bytes(list, &data);
 	}
 	closedir(dir);
+
 	printf("total %ld\n", data.total_block_count / 2); // division by 2 bc ls count by blocks of 1024b and this count for 512b blocks
 	if (!sort_list_name(&list, ALPHA))
 		return free_list(&list);
+
 	t_list *tmp = list;
 	while (tmp->next != list){
 		print_permission_link(tmp, data);
@@ -126,6 +128,7 @@ int main(int argc, char** argv){
 	print_size(tmp, data);
 	print_time(tmp->file_stat.st_mtime, data);
 	ft_putendl_fd(tmp->path, 1);
+
 	free_list(&list);
 	return 0;
 }

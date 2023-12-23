@@ -155,7 +155,7 @@ int	free_list(t_list **list)
 	*list = NULL;
 	return (1);
 }
-// skip starting '.' char 
+// skip starting '.' char
 static int	compare_function(t_list *first, t_list *second, int mode)
 {
 	char	*s1;
@@ -164,33 +164,45 @@ static int	compare_function(t_list *first, t_list *second, int mode)
 	if (mode == ALPHA)
 	{
 		s1 = first->path;
-		if (s1[0] == '.')
-			s1 = &(s1[1]);
+		// if (s1[0] == '.')
+			// s1 = &(s1[1]);
 		s2 = second->path;
-		if (s2[0] == '.')
-			s2 = &(s2[1]);
-		return ft_strcasecmp(first->path, second->path);
+		// if (s2[0] == '.')
+		// 	s2 = &(s2[1]);
+		return ft_strcasecmp(s1, s2) <= 0;
 	}
 	else if (mode == TIME)
 		return first->file_stat.st_mtime > second->file_stat.st_mtime;
 	return 0;
 }
 
-static void	sort_tab_name(t_list ***tab, size_t len, int mode){
-	size_t	i;
-	size_t	j;
-	t_list	*tmp;
+static void	swap_node(t_list **a, t_list **b){
+	t_list	**tmp;
+	tmp = a;
+	a = b;
+	b = tmp;
+}
 
-	i = -1;
-	while(++i < len - 1){
-		j = -1;
-		while (++j < len - 1){
-			if (compare_function((*tab)[j], (*tab)[i + 1], mode) > 0){
-				tmp = (*tab)[j];
-				(*tab)[j] = (*tab)[j + 1];
-				(*tab)[j + 1] = tmp;
-			}
-		}
+static int	quick_swap_partition(t_list ***tab, int low, int high, int mode){
+	int		i = low - 1;
+	int		j = low;
+
+	while (j < high){
+		if (compare_function((*tab)[j], (*tab)[high], mode))
+			swap_node(&(*tab)[++i], &(*tab)[j]);
+		++j;
+	}
+	swap_node(&(*tab)[i + 1], &(*tab)[high]);
+	return (i + 1);
+}
+
+static void	quick_sort_tab(t_list ***tab, int low, int high, int mode){
+	int	pivot;
+
+	if (low < high){
+		pivot = quick_swap_partition(tab, low, high, mode);
+		quick_sort_tab(tab, low, pivot - 1, mode);
+		quick_sort_tab(tab, pivot + 1, high, mode);
 	}
 }
 
@@ -210,7 +222,7 @@ int	sort_list_name(t_list **list, int mode)
 	t_list	**tab;
 	size_t	index;
 	size_t	len;
-	
+
 	len = len_list(*list);
 	if (len <= 1)
 		return 1;
@@ -226,7 +238,7 @@ int	sort_list_name(t_list **list, int mode)
 		tmp = tmp->next;
 	}
 	tab[index++] = tmp;
-	sort_tab_name(&tab, len, mode);
+	quick_sort_tab(&tab, 0, len - 1, mode);
 	relink_tab(&tab, len);
 	*list = tab[0];
 	return free(tab), 1;
