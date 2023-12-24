@@ -11,11 +11,16 @@ static int	size_len(long long bytes){
 	return size;
 }
 
-static int	open_stat(t_list *list){
+static int	open_stat(t_list *list, char *cwd){
 	t_list	*actual;
+	char	path[PATH_MAX];
 
 	actual = list->prev;
-	if (!stat(actual->path, &(actual->file_stat)))
+	ft_memset(path, 0, PATH_MAX);
+	ft_strlcat(path, cwd, PATH_MAX);
+	ft_strlcat(path, "/", PATH_MAX);
+	ft_strlcat(path, actual->path, PATH_MAX);
+	if (!stat(path, &(actual->file_stat)))
 		return 1;
 	else
 		perror("Error while getting file stat");
@@ -44,6 +49,7 @@ int	get_dir_files(char *cwd, t_data *data, t_list **list)
 
 	dir = NULL;
 	dir = opendir(cwd);
+	// printf("_%s_\n", cwd);
 	if (!dir)
 		return perror("opendir"), 1;
 	struct dirent	*fileread = NULL;
@@ -52,7 +58,7 @@ int	get_dir_files(char *cwd, t_data *data, t_list **list)
 		fileread = readdir(dir);
 		if (!fileread)
 			break;
-		if (!list_append(list, fileread->d_name) || !open_stat(*list))
+		if (!list_append(list, fileread->d_name) || !open_stat(*list, cwd))
 			return closedir(dir), free_list(list);
 		get_bytes(*list, data);
 	}

@@ -26,3 +26,7 @@ file : notes      size : 530    blocksize : 512 blocks : 2   calc : 2
 file : obj        size : 512    blocksize : 512 blocks : 0   calc : 2
 file : src        size : 512    blocksize : 512 blocks : 0   calc : 2
 file : test.c     size : 3036   blocksize : 512 blocks : 8   calc : 6
+
+pour le tab faire `ls -R`
+
+pour faire ça calculer la distance entre le filename le plus petit et le file name le plus grand

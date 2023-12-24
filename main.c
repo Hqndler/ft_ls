@@ -38,18 +38,14 @@ void	parse_args(char **args, t_data *data){
 
 int main(int argc, char** argv){
 	t_data	data;
-	t_list	*list;
-
-	list = NULL;
 
 	init_data(&data);
 
 	if (argc >= 2)
 		parse_args(&argv[1], &data);
-	char	cwd[PATH_MAX]; //4096
 
-	if (!getcwd(cwd, PATH_MAX))
+	if (!getcwd(data.cwd, PATH_MAX))
 		return perror("pwd"), 1;
-
-	return ft_ls(data, list, cwd);
+	ft_strlcpy(data.dir, data.cwd, PATH_MAX);
+	return ft_ls_recursive(data, data.cwd);
 }

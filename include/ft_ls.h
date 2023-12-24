@@ -28,6 +28,8 @@ typedef struct	s_data{
 	time_t		currenttime;
 	int			bytespace;
 	int			linkspace;
+	char		cwd[PATH_MAX];
+	char		dir[PATH_MAX];
 }				t_data;
 
 typedef struct		s_list
@@ -59,6 +61,9 @@ void	print_size(t_list *actual, t_data data);
 void    print_owner_group(t_list *list);
 void	print_permission_link(t_list *list, t_data data);
 int		get_dir_files(char *cwd, t_data *data, t_list **list);
+int		ft_ls_recursive(t_data, char *cwd);
 int		ft_ls(t_data data, t_list *list, char *cwd);
+void	print_total(blkcnt_t total, bool l);
+void	print_filename(char *name, bool l, bool a);
 
 #endif

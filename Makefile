@@ -10,7 +10,7 @@ SRC_DIR	=	src/
 OBJ_DIR	=	obj/
 
 #Source
-FILES	=	main list_utils print_time print_size print_owner_group print_permission_link get_dir_files ft_ls
+FILES	=	main list_utils print_time print_size print_owner_group print_permission_link get_dir_files ft_ls print_filename print_total
 SRCS	=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJS	=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))
 
@@ -23,7 +23,7 @@ OBJF	=	.cache_exits
 $(OBJF) :
 	@mkdir -p $(OBJ_DIR)
 
-vpath %.c $(SRC_DIR)
+vpath %.c $(SRC_DIR) $(SRC_DIR)print
 vpath %.h include/
 
 all : $(NAME)
