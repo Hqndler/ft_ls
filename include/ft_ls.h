@@ -58,5 +58,7 @@ void	print_time(time_t lastmodified, t_data);
 void	print_size(t_list *actual, t_data data);
 void    print_owner_group(t_list *list);
 void	print_permission_link(t_list *list, t_data data);
+int		get_dir_files(char *cwd, t_data *data, t_list **list);
+int		ft_ls(t_data data, t_list *list, char *cwd);
 
 #endif
