@@ -8,7 +8,6 @@ static t_list	*following_pointer(t_list *list, t_data data){
 	return ((data.r) ? list->prev : list->next);
 }
 
-
 int	next_dir(t_data data, t_list *list, size_t len)
 {
 	t_list	*tmp;
@@ -18,6 +17,7 @@ int	next_dir(t_data data, t_list *list, size_t len)
 	ft_strlcpy(dir, data.dir, PATH_MAX);
 	while (len--)
 	{
+		// printf("%s %d\n", tmp->path, tmp->dir);
 		if ((data.a && tmp->dir) || 
 			(!data.a && tmp->path[0] != '.' && tmp->dir))
 		{
@@ -40,6 +40,8 @@ int	ft_ls_recursive(t_data data, char *cwd)
 
 	list = NULL;
 	data.total_block_count = 0;
+	data.bytespace = 0;
+	data.linkspace = 0;
 	if (!get_dir_files(cwd, &data, &list) || \
 		!sort_list_name(&list, (data.t ? TIME : ALPHA)))
 		return free_list(&list), 0;

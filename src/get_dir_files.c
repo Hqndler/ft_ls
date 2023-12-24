@@ -42,7 +42,7 @@ static void	get_bytes(t_list *list, t_data *data){
 	if (slen > data->linkspace)
 		data->linkspace = slen;
 	if (S_ISDIR(actual->file_stat.st_mode) && \
-		(ft_strcmp(actual->path, ".") || ft_strcmp(actual->path, "..")))
+		(ft_strcmp(actual->path, ".") != 0 && ft_strcmp(actual->path, "..") != 0))
 		actual->dir = true;
 }
 

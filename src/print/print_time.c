@@ -64,7 +64,9 @@ static void	fill_year(char *buff, int year, int (*index))
 	buff[(*index)++] = d + 48;
 	buff[(*index)++] = u + 48;
 }
-
+/*
+	Function will be deprecated after year 9999
+*/
 void	print_time(time_t lastmodified, t_data data)
 {
 	char		buffer[13];
