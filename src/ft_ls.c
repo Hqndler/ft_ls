@@ -76,6 +76,7 @@ int	ft_ls(t_data data, t_list *list, char *cwd)
 		print_filename(tmp->path, data.l, data.a);
 		tmp = following_pointer(tmp, data);
 	}
-	ft_putendl_fd("", 1);
+	if (!data.l)
+		ft_putendl_fd("", 1);
 	return (0);
 }
