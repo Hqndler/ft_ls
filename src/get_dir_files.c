@@ -41,6 +41,9 @@ static void	get_bytes(t_list *list, t_data *data){
 	actual->spacelink = slen;
 	if (slen > data->linkspace)
 		data->linkspace = slen;
+	if (S_ISDIR(actual->file_stat.st_mode) && \
+		(ft_strcmp(actual->path, ".") || ft_strcmp(actual->path, "..")))
+		actual->dir = true;
 }
 
 int	get_dir_files(char *cwd, t_data *data, t_list **list)
@@ -49,9 +52,8 @@ int	get_dir_files(char *cwd, t_data *data, t_list **list)
 
 	dir = NULL;
 	dir = opendir(cwd);
-	// printf("_%s_\n", cwd);
 	if (!dir)
-		return perror("opendir"), 1;
+		return perror("opendir"), 0;
 	struct dirent	*fileread = NULL;
 	while (1)
 	{
@@ -59,9 +61,9 @@ int	get_dir_files(char *cwd, t_data *data, t_list **list)
 		if (!fileread)
 			break;
 		if (!list_append(list, fileread->d_name) || !open_stat(*list, cwd))
-			return closedir(dir), free_list(list);
+			return closedir(dir), free_list(list), 0;
 		get_bytes(*list, data);
 	}
 	closedir(dir);
-	return (0);
+	return (1);
 }

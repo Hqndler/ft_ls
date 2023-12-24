@@ -11,6 +11,7 @@ static int	list_new_elem_str(t_list **new, char *elem)
 	(*new)->spacesize = 0;
 	(*new)->spacelink = 0;
 	(*new)->bytes = 0;
+	(*new)->dir = false;
 	(*new)->next = NULL;
 	(*new)->prev = NULL;
 	return (1);
@@ -177,10 +178,10 @@ static int	compare_function(t_list *first, t_list *second, int mode)
 }
 
 static void	swap_node(t_list **a, t_list **b){
-	t_list	**tmp;
-	tmp = a;
-	a = b;
-	b = tmp;
+	t_list	*tmp;
+	tmp = *a;
+	*a = *b;
+	*b = tmp;
 }
 
 static int	quick_swap_partition(t_list ***tab, int low, int high, int mode){
@@ -189,10 +190,10 @@ static int	quick_swap_partition(t_list ***tab, int low, int high, int mode){
 
 	while (j < high){
 		if (compare_function((*tab)[j], (*tab)[high], mode))
-			swap_node(&(*tab)[++i], &(*tab)[j]);
+			swap_node(&((*tab)[++i]), &((*tab)[j]));
 		++j;
 	}
-	swap_node(&(*tab)[i + 1], &(*tab)[high]);
+	swap_node(&((*tab)[i + 1]), &((*tab)[high]));
 	return (i + 1);
 }
 
@@ -225,10 +226,10 @@ int	sort_list_name(t_list **list, int mode)
 
 	len = len_list(*list);
 	if (len <= 1)
-		return 1;
+		return (1);
 	tab = malloc(sizeof(t_list) * len);
 	if (!list)
-		return (0);
+		return ft_putstr_fd("malloc error", 2), (0);
 	tab[len - 1] = NULL;
 	tmp = *list;
 	index = 0;

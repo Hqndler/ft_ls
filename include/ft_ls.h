@@ -38,6 +38,7 @@ typedef struct		s_list
 	int				spacesize;
 	int				spacelink;
 	off_t			bytes;
+	bool			dir;
 	struct stat		file_stat;
 	struct s_list	*prev;
 	struct s_list	*next;
@@ -62,8 +63,9 @@ void    print_owner_group(t_list *list);
 void	print_permission_link(t_list *list, t_data data);
 int		get_dir_files(char *cwd, t_data *data, t_list **list);
 int		ft_ls_recursive(t_data, char *cwd);
-int		ft_ls(t_data data, t_list *list, char *cwd);
+int		ft_ls(t_data data, t_list *list, size_t len);
 void	print_total(blkcnt_t total, bool l);
 void	print_filename(char *name, bool l, bool a);
+void	print_location(t_data data, char *cwd);
 
 #endif
