@@ -38,6 +38,8 @@ int	parse_args(char **args, t_data *data, int arg)
 		return data->R = true, parse_args(args, data, arg + 1);
 	else if (!ft_strcmp(tmp, "--reverse"))
 		return data->r = true, parse_args(args, data, arg + 1);
+	else if (!ft_strcmp(tmp, "--all"))
+		return data->a = true, parse_args(args, data, arg + 1);
 	else if (tmp[0] == '-' && tmp[1] != '-')
 		return parse_option(tmp, data), parse_args(args, data, arg + 1);
 	else if (tmp[0] == '-' && tmp[1] == '-')
