@@ -57,6 +57,7 @@ void	print_list(t_list *list);
 int		free_list(t_list **list);
 int		sort_list_name(t_list **list, int mode);
 
+int	parse_args(char **args, t_data *data, int arg);
 void	print_time(time_t lastmodified, t_data);
 void	print_size(t_list *actual, t_data data);
 void    print_owner_group(t_list *list);
