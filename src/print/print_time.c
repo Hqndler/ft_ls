@@ -58,30 +58,34 @@ static void	fill_year(char *buff, int year, int (*index))
 	year %= 100;
 	d = year / 10;
 	u = year % 10;
-	buff[(*index)++] = ' ';
 	buff[(*index)++] = m + 48;
 	buff[(*index)++] = c + 48;
 	buff[(*index)++] = d + 48;
 	buff[(*index)++] = u + 48;
+	buff[(*index)++] = ' ';
 }
 /*
 	Function will be deprecated after year 9999
+	260000 -> 30*6*24*60 + 800
+			  -> is number of seconds for 30*6 days (approx 6mounths)
+			  			   -> +800 to have a nice number
 */
 void	print_time(time_t lastmodified, t_data data)
 {
 	char		buffer[13];
-	struct tm	*now;
+	// struct tm	*now;
 	struct tm	*timeinfo;
 	int			i;
 
-	now = localtime(&data.currenttime);
+	// now = localtime(&data.currenttime);
+	memset(buffer, 0, 13);
 	timeinfo = localtime(&lastmodified);
 	i = get_mounth(buffer, timeinfo->tm_mon);
 	if (timeinfo->tm_mday < 10)
 		buffer[i++] = ' ';
 	fill_number(buffer, timeinfo->tm_mday, &i, ' ');
-	if (timeinfo->tm_year != now->tm_year)
-		fill_year(buffer, timeinfo->tm_year, &i);
+	if (data.currenttime - lastmodified > 260000)
+		fill_year(buffer, timeinfo->tm_year + 1900, &i);
 	else
 	{
 		if (timeinfo->tm_hour < 10)
