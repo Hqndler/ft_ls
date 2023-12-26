@@ -170,12 +170,12 @@ static int	compare_function(t_list *first, t_list *second, int mode)
 		s2 = second->path;
 		// if (s2[0] == '.')
 		// 	s2 = &(s2[1]);
-		return ft_strcasecmp(s1, s2) <= 0;
+		return ft_strcmp(s1, s2) <= 0;
 	}
 	else if (mode == TIME)
 	{
 		if (first->file_stat.st_mtime == second->file_stat.st_mtime)
-			return first->file_stat.st_mtim.tv_sec > second->file_stat.st_mtim.tv_sec;
+			return first->file_stat.st_mtim.tv_nsec > second->file_stat.st_mtim.tv_nsec;
 		return first->file_stat.st_mtime > second->file_stat.st_mtime;
 	}
 	return 0;
