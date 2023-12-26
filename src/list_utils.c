@@ -173,7 +173,11 @@ static int	compare_function(t_list *first, t_list *second, int mode)
 		return ft_strcasecmp(s1, s2) <= 0;
 	}
 	else if (mode == TIME)
+	{
+		if (first->file_stat.st_mtime == second->file_stat.st_mtime)
+			return first->file_stat.st_mtim.tv_sec > second->file_stat.st_mtim.tv_sec;
 		return first->file_stat.st_mtime > second->file_stat.st_mtime;
+	}
 	return 0;
 }
 
