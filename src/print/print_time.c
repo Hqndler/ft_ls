@@ -1,6 +1,6 @@
 #include "ft_ls.h"
 
-static int	fill_mounth(char *buff, const char *name)
+/*static int	fill_mounth(char *buff, const char *name)
 {
 	buff[0] = name[0];
 	buff[1] = name[1];
@@ -63,37 +63,26 @@ static void	fill_year(char *buff, int year, int (*index))
 	buff[(*index)++] = d + 48;
 	buff[(*index)++] = u + 48;
 	buff[(*index)++] = ' ';
-}
+}*/
 /*
-	Function will be deprecated after year 9999
-	260000 -> 30*6*24*60 + 800
-			  -> is number of seconds for 30*6 days (approx 6mounths)
-			  			   -> +800 to have a nice number
+	15778800 ~= 30*6*24*60*60
+			  -> is number of seconds for 30.4375*6 days (approx 6mounths)
 */
 void	print_time(time_t lastmodified, t_data data)
 {
 	char		buffer[13];
-	// struct tm	*now;
-	struct tm	*timeinfo;
-	int			i;
+	char		*str;
 
-	// now = localtime(&data.currenttime);
 	memset(buffer, 0, 13);
-	timeinfo = localtime(&lastmodified);
-	i = get_mounth(buffer, timeinfo->tm_mon);
-	if (timeinfo->tm_mday < 10)
-		buffer[i++] = ' ';
-	fill_number(buffer, timeinfo->tm_mday, &i, ' ');
-	if (data.currenttime - lastmodified > 260000)
-		fill_year(buffer, timeinfo->tm_year + 1900, &i);
-	else
+	str = ctime(&lastmodified);
+	ft_strlcpy(buffer, &str[4], 8);
+	if (data.currenttime - lastmodified > 15778800)
 	{
-		if (timeinfo->tm_hour < 10)
-			buffer[i++] = '0';
-		fill_number(buffer, timeinfo->tm_hour, &i, ':');
-		if (timeinfo->tm_min < 10)
-			buffer[i++] = '0';
-		fill_number(buffer, timeinfo->tm_min, &i, ' ');
+		buffer[7] = ' ';
+		ft_strlcat(&buffer[8], &str[20], 5);
 	}
+	else
+		ft_strlcat(&buffer[7], &str[11], 6);
+	buffer[12] = ' ';
 	write(1, buffer, 13);
 }
