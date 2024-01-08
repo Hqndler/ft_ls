@@ -1,17 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_dir_files.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/08 17:18:52 by echapus           #+#    #+#             */
+/*   Updated: 2024/01/08 17:21:15 by echapus          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
-static int	size_len(long long bytes){
+static int	size_len(long long bytes)
+{
 	int	size;
 
 	size = 1;
-	while (bytes >= 10){
+	while (bytes >= 10)
+	{
 		++size;
 		bytes /= 10;
 	}
-	return size;
+	return (size);
 }
 
-static int	open_stat(t_list *list, char *cwd){
+static int	open_stat(t_list *list, char *cwd)
+{
 	t_list	*actual;
 	char	path[PATH_MAX];
 
@@ -21,13 +36,14 @@ static int	open_stat(t_list *list, char *cwd){
 	ft_strlcat(path, "/", PATH_MAX);
 	ft_strlcat(path, actual->path, PATH_MAX);
 	if (!stat(path, &(actual->file_stat)))
-		return 1;
+		return (1);
 	else
 		perror("Error while getting file stat");
-	return 0;
+	return (0);
 }
 
-static void	get_bytes(t_list *list, t_data *data){
+static void	get_bytes(t_list *list, t_data *data)
+{
 	t_list	*actual;
 	int		slen;
 
@@ -42,26 +58,28 @@ static void	get_bytes(t_list *list, t_data *data){
 	if (slen > data->linkspace)
 		data->linkspace = slen;
 	if (S_ISDIR(actual->file_stat.st_mode) && \
-		(ft_strcmp(actual->path, ".") != 0 && ft_strcmp(actual->path, "..") != 0))
+		(ft_strcmp(actual->path, ".") != 0 && \
+		ft_strcmp(actual->path, "..") != 0))
 		actual->dir = true;
 }
 
 int	get_dir_files(char *cwd, t_data *data, t_list **list)
 {
-	DIR	*dir;
+	DIR				*dir;
+	struct dirent	*fileread;
 
 	dir = NULL;
 	dir = opendir(cwd);
 	if (!dir)
-		return perror("opendir"), 0;
-	struct dirent	*fileread = NULL;
+		return (perror("opendir"), 0);
+	fileread = NULL;
 	while (1)
 	{
 		fileread = readdir(dir);
 		if (!fileread)
-			break;
+			break ;
 		if (!list_append(list, fileread->d_name) || !open_stat(*list, cwd))
-			return closedir(dir), free_list(list), 0;
+			return (closedir(dir), free_list(list), 0);
 		get_bytes(*list, data);
 	}
 	closedir(dir);

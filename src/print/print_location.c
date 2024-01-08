@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_location.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/01/08 17:11:27 by echapus           #+#    #+#             */
+/*   Updated: 2024/01/08 17:33:39 by echapus          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_ls.h"
 
 void	print_location(t_data data, char *cwd)
 {
 	int	i;
 
-	if (!data.R)
+	if (!data.recursive)
 		return ;
 	i = 0;
 	while (cwd[i] && data.cwd[i] && cwd[i] == data.cwd[i])
