@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:14:03 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/08 17:33:27 by echapus          ###   ########.fr       */
+/*   Updated: 2024/01/11 18:24:10 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,9 @@ int	ft_ls_recursive(t_data data, char *cwd)
 	data.total_block_count = 0;
 	data.bytespace = 0;
 	data.linkspace = 0;
-	if (!get_dir_files(cwd, &data, &list) || \
-		!sort_list_name(&list, data.t))
+	if (!get_dir_files(cwd, &data, &list))
+		return (0);
+	if (!sort_list_name(&list, data.t))
 		return (free_list(&list), 0);
 	len = len_list(list);
 	print_location(data, cwd);
