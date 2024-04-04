@@ -6,13 +6,13 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:18:52 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/08 17:21:15 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 15:21:51 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static int	size_len(long long bytes)
+int	size_len(long long bytes)
 {
 	int	size;
 

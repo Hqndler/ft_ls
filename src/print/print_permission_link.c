@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:12:49 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/11 19:13:52 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 15:23:18 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	print_permission_link(t_list *list, t_data data)
 	check_all_perm(buff, &i, mode);
 	buff[i] = ' ';
 	write(1, buff, 11);
-	i = data.linkspace - actual->spacelink - 1;
+	i = data.linkspace - size_len((long long)actual->file_stat.st_nlink);
 	while (i-- > 0)
 		write(1, " ", 1);
 	ft_putnbr_fd((long)(actual->file_stat.st_nlink), 1);

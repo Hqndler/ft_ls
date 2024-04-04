@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:01:24 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/08 17:36:30 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 15:22:01 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int		free_list(t_list **list);
 int		compare_function(t_list *first, t_list *second, int mode);
 void	quick_sort_tab(t_list ***tab, int low, int high, int mode);
 int		sort_list_name(t_list **list, int mode);
+
+int		size_len(long long bytes);
 
 int		parse_args(char **args, t_data *data, int arg);
 void	print_time(time_t lastmodified, t_data data);
