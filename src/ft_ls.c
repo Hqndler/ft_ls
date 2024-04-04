@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:14:03 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/11 18:24:10 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 18:43:23 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int	ft_ls(t_data data, t_list *list, size_t len)
 			print_size(tmp, data);
 			print_time(tmp->file_stat.st_mtime, data);
 		}
-		print_filename(tmp->path, data.l, data.a);
+		print_filename(tmp->path, data.l, data.a, data);
 		tmp = following_pointer(tmp, data);
 	}
 	if (!data.l)

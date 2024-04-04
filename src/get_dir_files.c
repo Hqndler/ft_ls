@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:18:52 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/04 15:21:51 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 18:59:07 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ static void	get_bytes(t_list *list, t_data *data)
 	int		slen;
 
 	actual = list->prev;
+	if (actual->path[0] == '.' && !data->a)
+		return ;
 	data->total_block_count += actual->file_stat.st_blocks;
 	slen = size_len(actual->file_stat.st_size);
 	actual->spacesize = slen;

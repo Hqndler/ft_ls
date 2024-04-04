@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:01:24 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/04 15:22:01 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/04 18:43:27 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int		get_dir_files(char *cwd, t_data *data, t_list **list);
 int		ft_ls_recursive(t_data data, char *cwd);
 int		ft_ls(t_data data, t_list *list, size_t len);
 void	print_total(blkcnt_t total, bool l);
-void	print_filename(char *name, bool l, bool a);
+void	print_filename(char *name, bool l, bool a, t_data data);
 void	print_location(t_data data, char *cwd);
 
 #endif
