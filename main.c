@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:31:28 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/08 17:33:11 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/15 17:15:13 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	init_data(t_data *data)
 {
+	struct winsize	ws;
+
 	data->a = false;
 	data->l = false;
 	data->recursive = false;
@@ -23,6 +25,10 @@ void	init_data(t_data *data)
 	data->total_block_count = 0;
 	data->bytespace = 0;
 	data->linkspace = 0;
+	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
+		data->ws_col =  80;
+	else
+		data->ws_col = ws.ws_col;
 }
 
 static int	re_main(t_data data, int res, char **args)
@@ -50,6 +56,7 @@ int	main(int argc, char **argv)
 	t_data	data;
 	int		res;
 
+	res = 0;
 	init_data(&data);
 	if (argc >= 2)
 		res = parse_args(&argv[1], &data, 0);

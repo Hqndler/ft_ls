@@ -10,9 +10,9 @@ SRC_DIR	=	src/
 OBJ_DIR	=	obj/
 
 #Source
-FILES	=	main list_utils print_time print_size print_owner_group \
+FILES	=	main list_utils utils print_time print_size print_owner_group \
 			print_permission_link get_dir_files ft_ls print_filename \
-			print_total print_location parser quick_sort sort_list
+			print_total print_location parser quick_sort sort_list 
 
 SRCS	=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJS	=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))

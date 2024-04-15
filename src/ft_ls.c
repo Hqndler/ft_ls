@@ -6,27 +6,11 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:14:03 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/04 18:43:23 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/15 16:43:45 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-
-static t_list	*first_pointer(t_list *list, t_data data)
-{
-	if (data.r)
-		return (list->prev);
-	return (list);
-}
-	// return ((data.r) ? list->prev : list);
-
-static t_list	*following_pointer(t_list *list, t_data data)
-{
-	if (data.r)
-		return (list->prev);
-	return (list->next);
-}
-	// return ((data.r) ? list->prev : list->next);
 
 int	next_dir(t_data data, t_list *list, size_t len)
 {
@@ -79,6 +63,8 @@ int	ft_ls(t_data data, t_list *list, size_t len)
 {
 	t_list	*tmp;
 
+	if (!data.l)
+		return (print_filename_only(list, data, len), 1);
 	print_total(data.total_block_count / 2, data.l);
 	tmp = first_pointer(list, data);
 	while (len--)
@@ -95,10 +81,10 @@ int	ft_ls(t_data data, t_list *list, size_t len)
 			print_size(tmp, data);
 			print_time(tmp->file_stat.st_mtime, data);
 		}
-		print_filename(tmp->path, data.l, data.a, data);
+		print_filename(tmp->path, data);
 		tmp = following_pointer(tmp, data);
 	}
-	if (!data.l)
-		ft_putendl_fd("", 1);
+	// if (!data.l)
+		// ft_putendl_fd("", 1);
 	return (1);
 }

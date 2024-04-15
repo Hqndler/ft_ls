@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:01:24 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/04 18:43:27 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/15 17:27:53 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 # include <limits.h> // PATH_MAX
 # include <stdio.h> // printf
 # include <stdbool.h> // bool
+#include <sys/ioctl.h> //ioctl winsize
 # include "../Libft/src/libft.h" //
 
 typedef struct s_data{
@@ -42,6 +43,7 @@ typedef struct s_data{
 	int			linkspace;
 	char		cwd[PATH_MAX];
 	char		dir[PATH_MAX];
+	int			ws_col;
 }				t_data;
 
 typedef struct s_list
@@ -68,6 +70,10 @@ void	quick_sort_tab(t_list ***tab, int low, int high, int mode);
 int		sort_list_name(t_list **list, int mode);
 
 int		size_len(long long bytes);
+t_list	*first_pointer(t_list *list, t_data data);
+t_list	*following_pointer(t_list *list, t_data data);
+char	**list_to_tab(t_list *list, t_data data, size_t len);
+int		tab_strlen(char **tab, size_t len, t_data data);
 
 int		parse_args(char **args, t_data *data, int arg);
 void	print_time(time_t lastmodified, t_data data);
@@ -78,7 +84,8 @@ int		get_dir_files(char *cwd, t_data *data, t_list **list);
 int		ft_ls_recursive(t_data data, char *cwd);
 int		ft_ls(t_data data, t_list *list, size_t len);
 void	print_total(blkcnt_t total, bool l);
-void	print_filename(char *name, bool l, bool a, t_data data);
+void	print_filename_only(t_list *list, t_data data, size_t len);
+void	print_filename(char *name, t_data data);
 void	print_location(t_data data, char *cwd);
 
 #endif
