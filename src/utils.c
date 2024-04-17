@@ -28,39 +28,46 @@ t_list	*following_pointer(t_list *list, t_data data)
 }
 	// return ((data.r) ? list->prev : list->next);
 
+size_t	real_len(t_list *list, size_t len, t_data data)
+{
+	size_t	new;
+	t_list	*tmp;
+
+	if (data.a)
+		return (len);
+	tmp = list;
+	new = 1;
+	while (tmp->next != list)
+	{
+		while (tmp->path[0] == '.' && !data.a)
+			tmp = tmp->next;
+		++new;
+		tmp = tmp->next;
+	}
+	return (new);
+}
+
 char	**list_to_tab(t_list *list, t_data data, size_t len)
 {
 	char	**tab;
 	t_list	*tmp;
 	int		i;
 
+	len = real_len(list, len, data);
 	tab = malloc(sizeof(char *) * (len + 1));
 	if (!tab)
 		return NULL;
 	tmp = first_pointer(list, data);
-	tab[len] = NULL;
-	i =  0;
-	while (i < (int)len)
+	i = 0;
+	while (i <= (int)len)
+		tab[i++] = NULL;
+	i = 0;
+	while (--len)
 	{
+		while (tmp->path[0] == '.' && !data.a)
+			tmp = following_pointer(tmp, data);
 		tab[i++] = tmp->path;
 		tmp = following_pointer(tmp, data);
 	}
-	tab[0] = tmp->path;
 	return tab;
-}
-
-int	tab_strlen(char **tab, size_t len, t_data data)
-{
-	int		total;
-	int		i;
-
-	total = 0;
-	i = -1;
-	while (++i < (int)len)
-	{
-		if (tab[i][0] == '.' && !data.a)
-			continue;
-		total += (int)ft_strlen(tab[i]) + 2;
-	}
-	return total;
 }

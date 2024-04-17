@@ -12,66 +12,99 @@
 
 #include "ft_ls.h"
 
-static void	simple_print(char **tab, size_t len, t_data data)
+int	space_tab(char **tab, int start, int lines, int length)
 {
-	while (--len)
-	{
-		if (!data.a && tab[len][0] == '.')
-			continue;
-		ft_putstr_fd(tab[len], 1);
-		ft_putstr_fd("  ", 1);
-	}
-	if (!data.a && tab[len][0] == '.')
-		return (free(tab));
-	ft_putstr_fd(tab[len], 1);
-	ft_putstr_fd("  ", 1);
-	ft_putendl_fd("", 1);
-	free(tab);
-}
-
-void 	longest_in_col(char **tab, t_data data, int lines)
-{
-	int	i;
-	int	i_longest;
-	int	longest;
 	int	len;
+	int	longest;
+	int	startlen;
+	int	i;
+	int	count;
 
-	i = -1;
-	len = 0;
-	longest = 0;
-	while (++i <= lines)
+	startlen = ft_strlen(tab[start]);
+	longest = startlen;
+	i = (start % lines) * -1;
+	count = 0;
+	while (++count <= lines)
 	{
-		if (tab[i][0] == '.' && !data.a)
-			continue ;
-		len = ft_strlen(tab[i]);
-		if (len > longest)
+		if ((start + i) < length)
 		{
-			longest = len;
-			i_longest = i;
+			len = ft_strlen(tab[start + i++]);
+			if (len > longest)
+				longest = len;
 		}
 	}
-	printf("%s est le plus long avec %d\n", tab[i_longest], longest);
+	if (longest > startlen)
+		return (longest - startlen);
+	return (0);
+}
+
+bool	try_write_tab(char **tab, int lines, int len, t_data data)
+{
+	int	ret;
+	int	line;
+	int	i;
+
+	line = -1;
+	ret = 0;
+	while (++line < lines)
+	{
+		i = line;
+		while (i < len)
+		{
+			ret += (int)ft_strlen(tab[i]) + space_tab(tab, i, lines, len) + 2;
+			i += lines;
+		}
+		if (ret > data.ws_col)
+			return (false);
+		ret = 0;
+	}
+	return (true);
+}
+
+void	print_tab(char **tab, int lines, int len)
+{
+	int	line;
+	int	i;
+	int	space;
+
+	line = -1;
+	space = 0;
+	while (++line < lines)
+	{
+		i = line;
+		while (i < len)
+		{
+			ft_putstr_fd(tab[i], 1);
+			space = space_tab(tab, i, lines, len) + 2;
+			while (space-- != 0)
+				ft_putchar_fd(' ', 1);
+			i += lines;
+		}
+		ft_putendl_fd("", 1);
+	}
 }
 
 void	print_filename_only(t_list *list, t_data data, size_t len)
 {
 	char	**tab;
-	int		total_len;
 	int		lines;
 
 	tab = list_to_tab(list, data, len);
 	if (!tab)
 		return ;
-	total_len = tab_strlen(tab, len, data);
-	printf("total len %d et ws_col %d\n", total_len, data.ws_col);
-	if (total_len < data.ws_col)
-		return (simple_print(tab, len, data));
-	lines = (total_len / data.ws_col);
-	if (total_len % data.ws_col)
-		++lines;
-	printf("nombre de lines %d par colones, total %d et ws_col %d\n", lines, total_len, data.ws_col);
-	longest_in_col(tab, data, lines);
-	// simple_print(tab, len, data);
+	lines = 1;
+	len = 0;
+	while (tab[len])
+		++len;
+	while (true)
+	{
+		if (try_write_tab(tab, lines, (int)len, data) == true)
+			break ;
+		else
+			++lines;
+	}
+	print_tab(tab, lines, (int)len);
+	free(tab);
 }
 
 void	print_filename(char *name, t_data data)
@@ -82,8 +115,6 @@ void	print_filename(char *name, t_data data)
 
 	if (name[0] == '.' && !data.a)
 		return ;
-	// if (!l)
-		// return (ft_putstr_fd(name, 1), ft_putstr_fd("  ", 1));
 	ft_putstr_fd(name, 1);
 	ft_bzero(tmp, 4096);
 	ft_strlcat(tmp, data.cwd, 4096);
