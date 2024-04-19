@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:11:52 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/15 18:47:00 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/19 16:33:26 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	print_tab(char **tab, int lines, int len)
 	while (++line < lines)
 	{
 		i = line;
-		while (i < len)
+		while (i <= len)
 		{
 			ft_putstr_fd(tab[i], 1);
 			space = space_tab(tab, i, lines, len) + 2;
@@ -96,7 +96,7 @@ void	print_filename_only(t_list *list, t_data data, size_t len)
 	len = 0;
 	while (tab[len])
 		++len;
-	while (true)
+	while (lines <= (int)len)
 	{
 		if (try_write_tab(tab, lines, (int)len, data) == true)
 			break ;

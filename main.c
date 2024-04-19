@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:31:28 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/15 17:15:13 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/19 16:26:59 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_data(t_data *data)
 	data->bytespace = 0;
 	data->linkspace = 0;
 	if (ioctl(STDIN_FILENO, TIOCGWINSZ, &ws) == -1)
-		data->ws_col =  80;
+		data->ws_col = 80;
 	else
 		data->ws_col = ws.ws_col;
 }

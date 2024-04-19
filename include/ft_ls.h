@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:01:24 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/15 17:27:53 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/19 16:27:34 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # include <limits.h> // PATH_MAX
 # include <stdio.h> // printf
 # include <stdbool.h> // bool
-#include <sys/ioctl.h> //ioctl winsize
+# include <sys/ioctl.h> //ioctl winsize
 # include "../Libft/src/libft.h" //
 
 typedef struct s_data{
