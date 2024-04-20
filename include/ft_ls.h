@@ -37,6 +37,7 @@ typedef struct s_data{
 	bool		recursive;
 	bool		r;
 	bool		t;
+	bool		arg_dir;
 	__blkcnt_t	total_block_count;
 	time_t		currenttime;
 	int			bytespace;

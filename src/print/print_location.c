@@ -16,12 +16,14 @@ void	print_location(t_data data, char *cwd)
 {
 	int	i;
 
-	if (!data.recursive)
+	if (!data.recursive && !data.arg_dir)
 		return ;
 	i = 0;
-	while (cwd[i] && data.cwd[i] && cwd[i] == data.cwd[i])
-		++i;
-	write(1, ".", 1);
+	if (!data.arg_dir)
+		while (cwd[i] && data.cwd[i] && cwd[i] == data.cwd[i])
+			++i;
+	if (!data.arg_dir)
+		write(1, ".", 1);
 	ft_putstr_fd(&(cwd[i]), 1);
 	write(1, ":\n", 2);
 }

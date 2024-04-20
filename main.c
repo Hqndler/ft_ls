@@ -21,6 +21,7 @@ void	init_data(t_data *data)
 	data->recursive = false;
 	data->r = false;
 	data->t = false;
+	data->arg_dir = false;
 	data->currenttime = time(NULL);
 	data->total_block_count = 0;
 	data->bytespace = 0;
@@ -36,6 +37,8 @@ static int	re_main(t_data data, int res, char **args)
 	int	arg;
 
 	arg = -1;
+	if (res >= 2 || data.recursive)
+		data.arg_dir = true;
 	while (args[++arg])
 	{
 		if (args[arg][0] == '-')
@@ -44,7 +47,8 @@ static int	re_main(t_data data, int res, char **args)
 		ft_strlcpy(data.dir, args[arg], PATH_MAX);
 		if (ft_ls_recursive(data, data.cwd))
 			return (1);
-		--res;
+		if (--res)
+			write(1, "\n", 1);
 	}
 	if (res == 0)
 		return (0);

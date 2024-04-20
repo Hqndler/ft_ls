@@ -73,7 +73,11 @@ int	get_dir_files(char *cwd, t_data *data, t_list **list)
 	dir = NULL;
 	dir = opendir(cwd);
 	if (!dir)
-		return (perror("opendir"), 0);
+	{
+		ft_putstr_fd("ft_ls: cannot access '", 2);
+		ft_putstr_fd(cwd, 2);
+		return (perror("'"), 0);
+	}
 	fileread = NULL;
 	while (1)
 	{
