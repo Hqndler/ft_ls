@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:24:08 by echapus           #+#    #+#             */
-/*   Updated: 2024/01/08 17:34:17 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:35:10 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ int	parse_args(char **args, t_data *data, int arg)
 		return (data->r = true, parse_args(args, data, arg + 1));
 	else if (!ft_strcmp(tmp, "--all"))
 		return (data->a = true, parse_args(args, data, arg + 1));
-	else if (tmp[0] == '-' && tmp[1] != '-')
+	else if (!ft_strcmp("--", tmp))
+		return (parse_args(args, data, arg + 1));
+	else if (tmp[0] == '-' && tmp[1] != '-' && tmp[1])
 		return (parse_option(tmp, data), parse_args(args, data, arg + 1));
 	else if (tmp[0] == '-' && tmp[1] == '-')
 	{

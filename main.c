@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:31:28 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/19 16:26:59 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/22 14:35:37 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	re_main(t_data data, int res, char **args)
 		data.arg_dir = true;
 	while (args[++arg])
 	{
-		if (args[arg][0] == '-')
+		if (args[arg][0] == '-' && ft_strlen(args[arg]) > 1)
 			continue ;
 		ft_strlcpy(data.cwd, args[arg], PATH_MAX);
 		ft_strlcpy(data.dir, args[arg], PATH_MAX);
