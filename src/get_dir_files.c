@@ -6,7 +6,7 @@
 /*   By: echapus <echapus@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 17:18:52 by echapus           #+#    #+#             */
-/*   Updated: 2024/04/04 18:59:07 by echapus          ###   ########.fr       */
+/*   Updated: 2024/04/30 17:02:58 by echapus          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,28 @@ static void	get_bytes(t_list *list, t_data *data)
 		actual->dir = true;
 }
 
+int	open_file_or_dir(t_list **list, t_data *data, char *cwd)
+{
+	struct stat	path_stat;
+
+	if (stat(cwd, &path_stat))
+		return (-1);
+	if (S_ISDIR(path_stat.st_mode))
+		return (0);
+	return (1);
+}
+
 int	get_dir_files(char *cwd, t_data *data, t_list **list)
 {
 	DIR				*dir;
 	struct dirent	*fileread;
+	int				check;
 
+	check = open_file_or_dir(list, data, cwd);
+	if (check == 1)
+		return (add_file(list, data, cwd));
+	if (check == -1)
+		return (0);
 	dir = NULL;
 	dir = opendir(cwd);
 	if (!dir)
