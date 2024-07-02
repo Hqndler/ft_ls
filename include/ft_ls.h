@@ -30,6 +30,7 @@
 # include <stdbool.h> // bool
 # include <sys/ioctl.h> //ioctl winsize
 # include "../Libft/src/libft.h" //
+# include <linux/limits.h>
 
 typedef struct s_data{
 	bool		a;
